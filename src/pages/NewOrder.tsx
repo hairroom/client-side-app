@@ -22,6 +22,7 @@ import GetOut from '../components/ui/GetOut';
 import { OrderContext } from '../context/orders/OrderContext';
 import { Loading } from "../components/ui/Loading";
 import SaveIcon from '@mui/icons-material/Save';
+import { Badge } from "@mui/icons-material";
 
 type FormData = {
   name: string;
@@ -134,37 +135,16 @@ const NewOrder = () => {
                             <GetOut />
                                 <LayoutOrders>
                                     <form onSubmit={handleSubmit(onSaveData)} noValidate>
-                                        <Box sx={{ width: 350, padding: "10px 20px", margin: "0 auto" }}>
+                                        <Box sx={{ width: 350, margin: "0 auto" }}>
                                             <Typography
                                                 variant="h2"
                                                 fontWeight={600}
                                                 fontSize="30px"
                                                 textAlign="center"
-                                                marginBottom={1}
+                                                marginBottom={6}
                                             >
                                                 Registro de órdenes
                                             </Typography>
-                                            <Typography
-                                            variant="h6"
-                                            fontWeight={400}
-                                            fontSize="23px"
-                                            textAlign="center"
-                                            marginBottom={8}
-                                            >   
-                                                Datos personales
-                                            </Typography>
-                                            <Box
-                                            sx={{
-                                                display: "flex",
-                                                justifyContent: "space-around",
-                                                marginBottom: "8%",
-                                                marginTop: "-12%",
-                                            }}
-                                            >
-                                            <Avatar sx={{ bgcolor: blue[500] }}>1</Avatar>
-                                            <hr style={{ width: "255px", height: "2px", margin: "auto 0" }} />
-                                            <Avatar sx={{ bgcolor: blue[500], opacity: 0.3 }}>2</Avatar>
-                                            </Box>
                                             <Grid container spacing={2}>
                                                 <Grid item xs={12}>
                                                     <TextField
