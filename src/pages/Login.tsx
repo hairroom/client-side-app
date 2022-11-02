@@ -7,6 +7,7 @@ import { ErrorOutline } from '@mui/icons-material';
 import { AuthContext } from '../context/auth/AuthContext';
 import { Link as LinkRRD, Navigate, useNavigate } from 'react-router-dom';
 import GetOut from '../components/ui/GetOut';
+import { Loading } from '../components/ui/Loading';
 
 type FormData = {
     email: string,
@@ -19,22 +20,28 @@ const Login = () => {
     const { loginUser } = useContext( AuthContext );
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [showError, setShowError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const onLoginUser = async ( { email, password }: FormData ) => {
 
         setShowError(false);
+        setLoading(true);
 
         const isValidLogin = await loginUser( email, password );
 
         if( !isValidLogin ){
             setShowError(true)
             setTimeout(() => setShowError(false), 3000)
+            setLoading(false);
             return;
         }
 
         //TODO: navegar a otra página privada
         navigate('/admin/welcome')
+        setLoading(false);
     }
+
+    if( loading ) return <Loading />
 
   return (
       <>

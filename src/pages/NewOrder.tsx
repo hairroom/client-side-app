@@ -8,8 +8,10 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
+  InputLabel,
   Radio,
   RadioGroup,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,7 +24,7 @@ import GetOut from '../components/ui/GetOut';
 import { OrderContext } from '../context/orders/OrderContext';
 import { Loading } from "../components/ui/Loading";
 import SaveIcon from '@mui/icons-material/Save';
-import { Badge } from "@mui/icons-material";
+import MenuItem from '@mui/material/MenuItem';
 
 type FormData = {
   name: string;
@@ -40,7 +42,7 @@ type FormData = {
 
 const NewOrder = () => {
 
-    const typeDocument = [
+    const typeDocuments = [
         "Cédula de Ciudadanía",
         "Tarjeta de Identidad",
         "Pasaporte",
@@ -65,32 +67,6 @@ const NewOrder = () => {
         mode: "onChange",
         reValidateMode: "onChange",
         });
-    
-    // const onSaveData = async ({
-    //     name,
-    //     numberIdentification,
-    //     typeIdentification,
-    //     lastName,
-    //     phone,
-    //     email,
-    //     address,
-    //     // service,
-    //     // product,
-    //     // price,
-    //     // paymentMethod,
-    // }: FormData) => {
-
-    //     localStorage.setItem("name", name);
-    //     localStorage.setItem("numberIdentification", numberIdentification);
-    //     localStorage.setItem("typeIdentification", typeDoc);
-    //     localStorage.setItem("lastName", lastName);
-    //     localStorage.setItem("phone", String(phone));
-    //     localStorage.setItem("email", email);
-    //     localStorage.setItem("address", address);
-
-    //     navigate('/')
-
-    // };
 
     const { addOrder } = useContext(OrderContext);
     const [loading, setLoading] = useState(false);
@@ -145,7 +121,54 @@ const NewOrder = () => {
                                             >
                                                 Registro de órdenes
                                             </Typography>
+                                            <Grid item xs={12}>
+                                                <FormControl fullWidth sx={{ mb: 2 }} variant="filled">
+                                                    <InputLabel id="demo-simple-select-label">Tipo de Documento</InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-label"
+                                                        id="demo-simple-select"
+                                                        value={typeDoc}
+                                                        label="Age"
+                                                        onChange={onTypeDocumentChanged}
+                                                    >
+                                                        {
+                                                            typeDocuments.map(typeDocument => (
+                                                                <MenuItem
+                                                                    key={typeDocument}
+                                                                    value={typeDocument}
+                                                                >
+                                                                    {typeDocument}
+                                                                </MenuItem>
+                                                            ))
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
                                             <Grid container spacing={2}>
+                                                <Grid item xs={12}>
+                                                    <TextField
+                                                        label="Número de Identificación"
+                                                        autoComplete="off"
+                                                        type="string"
+                                                        variant="filled"
+                                                        fullWidth
+                                                        defaultValue={localStorage.getItem("numberIdentification")}
+                                                        {...register("numberIdentification", {
+                                                            required: "Este campo es requerido",
+                                                            minLength: {
+                                                                value: 4,
+                                                                message: "Debe de tener un mínimo de 4 caracteres.",
+                                                            },
+                                                            maxLength: {
+                                                            value: 15,
+                                                            message: 'Superaste el límite de caracteres, debe tener máximo 15.'
+                                                            }
+                                                        })}
+                                                        error={!!errors.numberIdentification}
+                                                        helperText={errors.numberIdentification?.message}
+                                                    />
+                                                </Grid>
+
                                                 <Grid item xs={12}>
                                                     <TextField
                                                         label="Nombre"
@@ -246,30 +269,7 @@ const NewOrder = () => {
                                                         helperText={errors.address?.message}
                                                     />
                                                 </Grid>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        label="Número de Identificación"
-                                                        autoComplete="off"
-                                                        type="string"
-                                                        variant="filled"
-                                                        fullWidth
-                                                        defaultValue={localStorage.getItem("numberIdentification")}
-                                                        {...register("numberIdentification", {
-                                                            required: "Este campo es requerido",
-                                                            minLength: {
-                                                                value: 4,
-                                                                message: "Debe de tener un mínimo de 4 caracteres.",
-                                                            },
-                                                            maxLength: {
-                                                            value: 15,
-                                                            message: 'Superaste el límite de caracteres, debe tener máximo 15.'
-                                                            }
-                                                        })}
-                                                        error={!!errors.numberIdentification}
-                                                        helperText={errors.numberIdentification?.message}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12}>
+                                                {/* <Grid item xs={12}>
                                                     <FormControl>
                                                         <FormLabel>Tipo de Documento:</FormLabel>
                                                         <RadioGroup
@@ -287,7 +287,7 @@ const NewOrder = () => {
                                                             ))}
                                                         </RadioGroup>
                                                     </FormControl>
-                                                </Grid>
+                                                </Grid> */}
                                             </Grid>
                                             <Box 
                                                 display="flex"

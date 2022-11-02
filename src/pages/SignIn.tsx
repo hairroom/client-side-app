@@ -7,6 +7,7 @@ import { ErrorOutline } from '@mui/icons-material';
 import { AuthContext } from '../context/auth/AuthContext';
 import { Link as LinkRRD, useNavigate } from 'react-router-dom';
 import GetOut from '../components/ui/GetOut';
+import { Loading } from '../components/ui/Loading';
 
 
 type FormData ={
@@ -23,22 +24,28 @@ const SignIn = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const onRegisterForm = async ( { name, email, password }: FormData ) => {
         
         setShowError(false);
+        setLoading(true);
+        
         const { hasError, message } = await registerUser( name, email, password )
 
         if( hasError ){
             setShowError(true)
             setErrorMessage( message! );
             setTimeout(() => setShowError(false), 3000)
+            setLoading(false);
             return;
         }
 
         navigate('/admin/welcome');
-
+        setLoading(false);
     }
+
+    if( loading ) return <Loading />
 
   return (
     <>
