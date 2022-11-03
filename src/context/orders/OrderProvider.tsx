@@ -8,10 +8,21 @@ import ordersApi from '../../api/ordersApi';
 
 export interface OrdersState{
     orders: Order[];
+    order: Order;
 }
 
 export const ORDERS_INITIAL_STATE: OrdersState = {
     orders: [],
+    order: {
+        name: '',
+        lastName: '',
+        phone: 0,
+        email: '',
+        numberIdentification: '',
+        typeIdentification: '',
+        address: '',
+        createdAt: 0
+    }
 }
 
 export const OrderProvider: React.FC<any> = ({ children }) => {
@@ -51,6 +62,14 @@ export const OrderProvider: React.FC<any> = ({ children }) => {
         return data;
     }
 
+    const filterPerson = async (typeIdentification: string, numberIdentification: string) => {
+
+        const { data } = await ordersApi.post<Order>('/filterOrderByIdentification', { typeIdentification, numberIdentification });
+        console.log('USUARIO ENCONTRADO EN EL PROVIDER: ', data);
+        dispatch({ type: 'Orders - SearchPerson', payload: data })
+        return data;
+    }
+
     // const refreshOrders = async () => {
 
     //     console.log('USER: ', user);
@@ -80,6 +99,7 @@ export const OrderProvider: React.FC<any> = ({ children }) => {
 
             //Methods
             addOrder,
+            filterPerson
         }}>
             { children }
         </OrderContext.Provider>

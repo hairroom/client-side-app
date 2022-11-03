@@ -15,6 +15,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
 import { LayoutOrders } from "../components/layouts/LayoutOrders";
 import { blue } from "@mui/material/colors";
@@ -25,6 +26,7 @@ import { OrderContext } from '../context/orders/OrderContext';
 import { Loading } from "../components/ui/Loading";
 import SaveIcon from '@mui/icons-material/Save';
 import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
 
 type FormData = {
   name: string;
@@ -51,6 +53,9 @@ const NewOrder = () => {
 
     const [typeDoc, setTypeDoc] = useState('');
     const [touched, setTouched] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const { addOrder, filterPerson, order } = useContext(OrderContext);
     let navigate = useNavigate();
 
     const onTypeDocumentChanged = (event: any) => {
@@ -62,14 +67,28 @@ const NewOrder = () => {
     const {
         register,
         handleSubmit,
+        getValues,
+        setValue,
         formState: { errors, isValid },
     } = useForm<FormData>({
         mode: "onChange",
         reValidateMode: "onChange",
         });
 
-    const { addOrder } = useContext(OrderContext);
-    const [loading, setLoading] = useState(false);
+    
+    const searchPerson = async () => {
+        setLoading(true);
+        const user = await filterPerson(typeDoc, getValues().numberIdentification);
+        setLoading(false);
+        if(user['_id']){
+            setDisabled(true);
+            setValue('name', user['name'], { shouldValidate: true});
+            setValue('lastName', user['lastName'], { shouldValidate: true});
+            setValue('phone', user['phone'], { shouldValidate: true, shouldDirty: true});
+            setValue('email', user['email'] ? user['email'] : '', { shouldValidate: true});
+            setValue('address', user['address'] ? user['address'] : '', { shouldValidate: true});
+        }
+    }
 
     const onSaveData = async ({
         name,
@@ -99,7 +118,7 @@ const NewOrder = () => {
         }
         setLoading(false)
             
-      }
+    }
 
     return (
         <div>
@@ -122,14 +141,16 @@ const NewOrder = () => {
                                                 Registro de órdenes
                                             </Typography>
                                             <Grid item xs={12}>
-                                                <FormControl fullWidth sx={{ mb: 2 }} variant="filled">
-                                                    <InputLabel id="demo-simple-select-label">Tipo de Documento</InputLabel>
+                                                <FormControl disabled={disabled} fullWidth sx={{ mb: 2 }} variant="outlined">
+                                                    <InputLabel id="demo-simple-select-label">Tipo Documento</InputLabel>
                                                     <Select
                                                         labelId="demo-simple-select-label"
                                                         id="demo-simple-select"
                                                         value={typeDoc}
-                                                        label="Age"
+                                                        label="Tipo documento"
                                                         onChange={onTypeDocumentChanged}
+                                                        color='info'
+                                                        
                                                     >
                                                         {
                                                             typeDocuments.map(typeDocument => (
@@ -145,13 +166,14 @@ const NewOrder = () => {
                                                 </FormControl>
                                             </Grid>
                                             <Grid container spacing={2}>
-                                                <Grid item xs={12}>
+                                                <Grid item xs={12} sx={{ display: 'flex'}}>
                                                     <TextField
                                                         label="Número de Identificación"
                                                         autoComplete="off"
                                                         type="string"
-                                                        variant="filled"
+                                                        variant="outlined"
                                                         fullWidth
+                                                        disabled={disabled}
                                                         defaultValue={localStorage.getItem("numberIdentification")}
                                                         {...register("numberIdentification", {
                                                             required: "Este campo es requerido",
@@ -165,17 +187,37 @@ const NewOrder = () => {
                                                             }
                                                         })}
                                                         error={!!errors.numberIdentification}
-                                                        helperText={errors.numberIdentification?.message}
+                                                        // helperText={errors.numberIdentification?.message}
+                                                        color='info'
                                                     />
+                                                    <Tooltip title="Consultar persona" placement="top">
+                                                        <Button variant="outlined" type='button' onClick={searchPerson} disabled={disabled}
+                                                        sx={{ backgroundColor: 'transparent',
+                                                            color: 'info.main',
+                                                            border: 1,
+                                                            borderRadius: '5px',
+                                                            borderColor: 'info.main',
+                                                            '&:hover': {
+                                                                backgroundColor: 'info.main',
+                                                                border: 'none',
+                                                                color: '#fff',
+                                                            }, 
+                                                        }}
+                                                    >
+                                                            <SearchIcon sx={{fontSize: 25}} />
+                                                        </Button>
+                                                    </Tooltip>
                                                 </Grid>
-
+                                                {/*TODO: TERMINAR ESTA MIERDA*/}
+                                                <span>{errors.numberIdentification?.message ? errors.numberIdentification?.message : null}</span>
                                                 <Grid item xs={12}>
                                                     <TextField
                                                         label="Nombre"
                                                         autoComplete="off"
                                                         type="text"
-                                                        variant="filled"
+                                                        variant="outlined"
                                                         fullWidth
+                                                        disabled={disabled}
                                                         defaultValue={localStorage.getItem("name")}
                                                         {...register("name", {
                                                             required: "Este campo es requerido",
@@ -190,6 +232,7 @@ const NewOrder = () => {
                                                         })}
                                                         error={!!errors.name}
                                                         helperText={errors.name?.message}
+                                                        color='info'
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
@@ -197,8 +240,9 @@ const NewOrder = () => {
                                                         label="Apellidos"
                                                         autoComplete="off"
                                                         type="text"
-                                                        variant="filled"
+                                                        variant="outlined"
                                                         fullWidth
+                                                        disabled={disabled}
                                                         defaultValue={localStorage.getItem("lastName")}
                                                         {...register("lastName", {
                                                             required: "Este campo es requerido",
@@ -213,6 +257,7 @@ const NewOrder = () => {
                                                         })}
                                                         error={!!errors.lastName}
                                                         helperText={errors.lastName?.message}
+                                                        color='info'
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
@@ -220,12 +265,13 @@ const NewOrder = () => {
                                                         label="Celular"
                                                         autoComplete="off"
                                                         type="number"
-                                                        variant="filled"
+                                                        variant="outlined"
                                                         fullWidth
+                                                        disabled={disabled}
                                                         defaultValue={localStorage.getItem("phone")}
                                                         {...register("phone", {
                                                             required: "Este campo es requerido",
-                                                            validate: (value) => validations.isNumberPhone(value),
+                                                            // validate: (value) => validations.isNumberPhone(value),
                                                             minLength: {
                                                                 value: 10,
                                                                 message: "Debe de tener un mínimo de 10 caracteres.",
@@ -237,6 +283,7 @@ const NewOrder = () => {
                                                         })}
                                                         error={!!errors.phone}
                                                         helperText={errors.phone?.message}
+                                                        color='info'
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
@@ -244,14 +291,16 @@ const NewOrder = () => {
                                                         label="Email"
                                                         autoComplete="off"
                                                         type="email"
-                                                        variant="filled"
+                                                        variant="outlined"
                                                         fullWidth
+                                                        disabled={disabled}
                                                         defaultValue={localStorage.getItem("email")}
                                                         {...register("email", {
                                                             //validate: (value) => validations.isEmail(value),
                                                         })}
                                                         error={!!errors.email}
                                                         helperText={errors.email?.message}
+                                                        color='info'
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
@@ -259,14 +308,16 @@ const NewOrder = () => {
                                                         label="Dirección de residencia"
                                                         autoComplete="off"
                                                         type="text"
-                                                        variant="filled"
+                                                        variant="outlined"
                                                         fullWidth
+                                                        disabled={disabled}
                                                         defaultValue={localStorage.getItem("address")}
                                                         {...register("address", {
                                                             //validate: (value) => validations.isEmail(value),
                                                         })}
                                                         error={!!errors.address}
                                                         helperText={errors.address?.message}
+                                                        color='info'
                                                     />
                                                 </Grid>
                                                 {/* <Grid item xs={12}>

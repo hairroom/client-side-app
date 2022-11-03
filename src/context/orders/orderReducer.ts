@@ -6,6 +6,7 @@ type OrderActionTypes =
 |   { type: 'Orders - UpdateNewOrder', payload: Order }
 |   { type: 'Orders - DeleteNewOrder', payload: Order }
 |   { type: 'Orders - RefreshData', payload: Order[] }
+|   { type: 'Orders - SearchPerson', payload: Order }
 
 export const orderReducer = ( state: OrdersState, action: OrderActionTypes ): OrdersState => {
 
@@ -18,9 +19,18 @@ export const orderReducer = ( state: OrdersState, action: OrderActionTypes ): Or
            }
 
         case 'Orders - AddNewOrder': 
-           return {
-               orders: [ ...state.orders, action.payload ]
+           return {    
+            ...state,
+            orders: [ ...state.orders, action.payload ]
            }
+
+        case 'Orders - SearchPerson':
+            console.log('ACTION PAYLOAD PERSONA: ', action.payload);
+            
+            return {
+                ...state,
+                order: action.payload
+            }
 
        default:
            return state;
