@@ -26,12 +26,12 @@ const Home = () => {
         >
           <LinkRRD to='/newOrder' className='withoutUnderline'>
             <Link display='flex' alignItems='center' style={{ cursor: 'pointer' }}>
-              <Typography variant='h1' color='secondary' fontSize={50} fontWeight={200}>Soy Cliente |</Typography>
+              <Typography variant='h1' color='secondary' fontSize={50} fontWeight={200}>Clientes |</Typography>
             </Link>
           </LinkRRD>
           <LinkRRD to='/auth/login' className='withoutUnderline'>
             <Link display='flex' alignItems='center' style={{ cursor: 'pointer', marginLeft: 10 }} >
-              <Typography variant='h1' fontSize={50} fontWeight={200}>Soy Admin</Typography>
+              <Typography variant='h1' fontSize={50} fontWeight={200}>Administración</Typography>
             </Link>
           </LinkRRD>
 

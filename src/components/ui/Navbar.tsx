@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-
+import LoginIcon from '@mui/icons-material/Login';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListIcon from '@mui/icons-material/List';
@@ -82,12 +82,20 @@ export const Navbar: FC = () => {
           ) : (
             <Box style={{ marginTop: "7px" }}>
               <LinkRRD to="/newOrder" className="withoutUnderline">
-                <Link style={{ cursor: "pointer" }}>
+                <Link style={{ cursor: "pointer", marginRight: 7 }}>
                   Pedido
                   <IconButton>
                     <Badge badgeContent={1} color="info">
                       <ShoppingCartOutlined />
                     </Badge>
+                  </IconButton>
+                </Link>
+              </LinkRRD>
+
+              <LinkRRD to="/auth/login" className="withoutUnderline">
+                <Link style={{ cursor: "pointer" }}>
+                  <IconButton> 
+                    <LoginIcon />
                   </IconButton>
                 </Link>
               </LinkRRD>

@@ -12,12 +12,10 @@ code {
     monospace;
 }
 
-
-
 @keyframes fadeIn {
   0% {opacity: 0;}
   100% {opacity: 1;}
-} 
+}
 
 @-webkit-keyframes fadeIn {
   0% {opacity: 0;}
@@ -46,4 +44,37 @@ code {
 
 .withoutUnderline {
   text-decoration: none;
+}
+
+.container-image-error {
+  display: flex;
+  justify-content: center;
+}
+
+.image-error {
+  width: 7rem;
+  height: 7rem;
+}
+
+.btn-close {
+  padding: 7px 20px;
+  background-color: #54acde;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.2) 0px 1px 3px -1px;
+  margin: 7px;
+}
+
+.btn-close:hover {
+  background-color: #409cd1;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.10) 0px 6px 6px;
+}
+
+.message-error {
+  font-size: .85rem;
+  color: #e53935;
 }

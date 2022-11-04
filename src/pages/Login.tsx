@@ -8,6 +8,7 @@ import { AuthContext } from '../context/auth/AuthContext';
 import { Link as LinkRRD, Navigate, useNavigate } from 'react-router-dom';
 import GetOut from '../components/ui/GetOut';
 import { Loading } from '../components/ui/Loading';
+import { Loading2 } from '../components/ui/Loading2';
 
 type FormData = {
     email: string,
@@ -41,7 +42,7 @@ const Login = () => {
         setLoading(false);
     }
 
-    if( loading ) return <Loading />
+    if( loading ) return <Loading2 />
 
   return (
       <>

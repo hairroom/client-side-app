@@ -52,12 +52,12 @@ export const OrderProvider: React.FC<any> = ({ children }) => {
 
         enqueueSnackbar('Órden agregada correctamente!', {
             variant: 'success',
-            autoHideDuration: 3000,
+            autoHideDuration: 4000,
             anchorOrigin: {
                 vertical: 'top',
                 horizontal: 'right'
             }
-        })
+        });
 
         return data;
     }

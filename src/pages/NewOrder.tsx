@@ -1,16 +1,10 @@
 import React, { useState, useContext } from "react";
 import {
-  Avatar,
   Box,
   Button,
-  capitalize,
   FormControl,
-  FormControlLabel,
-  FormLabel,
   Grid,
   InputLabel,
-  Radio,
-  RadioGroup,
   Select,
   TextField,
   Typography,
@@ -18,15 +12,16 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from "react-hook-form";
 import { LayoutOrders } from "../components/layouts/LayoutOrders";
-import { blue } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-import { validations } from "../utils";
 import GetOut from '../components/ui/GetOut';
 import { OrderContext } from '../context/orders/OrderContext';
 import { Loading } from "../components/ui/Loading";
 import SaveIcon from '@mui/icons-material/Save';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
+import { Modal } from '../components/ui/Modal';
+import { useSnackbar } from 'notistack';
+import { Loading2 } from '../components/ui/Loading2';
 
 type FormData = {
   name: string;
@@ -55,9 +50,14 @@ const NewOrder = () => {
     const [touched, setTouched] = useState(false);
     const [loading, setLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
+    const [openModal, setOpenModal] = React.useState(false);
+
     const { addOrder, filterPerson, order } = useContext(OrderContext);
+
     let navigate = useNavigate();
 
+    const { enqueueSnackbar } = useSnackbar();
+    
     const onTypeDocumentChanged = (event: any) => {
         console.log(event.target.value);
         setTypeDoc(event.target.value);
@@ -82,11 +82,21 @@ const NewOrder = () => {
         setLoading(false);
         if(user['_id']){
             setDisabled(true);
+            enqueueSnackbar('Usuario encontrado con éxito!', {
+                variant: 'success',
+                autoHideDuration: 4000,
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                }
+            })
             setValue('name', user['name'], { shouldValidate: true});
             setValue('lastName', user['lastName'], { shouldValidate: true});
             setValue('phone', user['phone'], { shouldValidate: true, shouldDirty: true});
             setValue('email', user['email'] ? user['email'] : '', { shouldValidate: true});
             setValue('address', user['address'] ? user['address'] : '', { shouldValidate: true});
+        } else {
+            setOpenModal(true);
         }
     }
 
@@ -124,11 +134,12 @@ const NewOrder = () => {
         <div>
             {
                 loading 
-                    ? ( <Loading /> )
+                    ? ( <Loading2 /> )
                     : (
                         <>
                             <GetOut />
                                 <LayoutOrders>
+                                    <Modal openModal={openModal} setOpenModal={setOpenModal} />
                                     <form onSubmit={handleSubmit(onSaveData)} noValidate>
                                         <Box sx={{ width: 350, margin: "0 auto" }}>
                                             <Typography
@@ -209,7 +220,13 @@ const NewOrder = () => {
                                                     </Tooltip>
                                                 </Grid>
                                                 {/*TODO: TERMINAR ESTA MIERDA*/}
-                                                <span>{errors.numberIdentification?.message ? errors.numberIdentification?.message : null}</span>
+                                                <Grid item xs={12} marginTop="-15px">
+                                                    <span 
+                                                        className="message-error"
+                                                    >
+                                                        {errors.numberIdentification?.message ? errors.numberIdentification?.message : null}
+                                                    </span>
+                                                </Grid>
                                                 <Grid item xs={12}>
                                                     <TextField
                                                         label="Nombre"
