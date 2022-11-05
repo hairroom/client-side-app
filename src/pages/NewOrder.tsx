@@ -15,12 +15,12 @@ import { LayoutOrders } from "../components/layouts/LayoutOrders";
 import { useNavigate } from "react-router-dom";
 import GetOut from '../components/ui/GetOut';
 import { OrderContext } from '../context/orders/OrderContext';
-import { Loading } from "../components/ui/Loading";
 import SaveIcon from '@mui/icons-material/Save';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import { Modal } from '../components/ui/Modal';
 import { useSnackbar } from 'notistack';
+import { Loading } from "../components/ui/Loading";
 import { Loading2 } from '../components/ui/Loading2';
 
 type FormData = {
@@ -124,8 +124,8 @@ const NewOrder = () => {
         
         if (isValidData["_id"]) {
             navigate('/');
-            
         }
+
         setLoading(false)
             
     }
@@ -219,7 +219,6 @@ const NewOrder = () => {
                                                         </Button>
                                                     </Tooltip>
                                                 </Grid>
-                                                {/*TODO: TERMINAR ESTA MIERDA*/}
                                                 <Grid item xs={12} marginTop="-15px">
                                                     <span 
                                                         className="message-error"

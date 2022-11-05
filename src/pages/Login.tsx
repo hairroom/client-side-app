@@ -37,7 +37,6 @@ const Login = () => {
             return;
         }
 
-        //TODO: navegar a otra página privada
         navigate('/admin/welcome')
         setLoading(false);
     }
@@ -57,7 +56,7 @@ const Login = () => {
                             <Grid container spacing={ 2 }>
                                 <Grid item>
                                     <Typography variant='h1' component='h1'>Iniciar Sesión</Typography>
-                                    <Chip 
+                                    <Chip
                                         label='Correo o Contraseña no válidos'
                                         color='error'
                                         icon={ <ErrorOutline />}

@@ -25,7 +25,6 @@ export const orderReducer = ( state: OrdersState, action: OrderActionTypes ): Or
            }
 
         case 'Orders - SearchPerson':
-            console.log('ACTION PAYLOAD PERSONA: ', action.payload);
             
             return {
                 ...state,
