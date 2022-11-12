@@ -36,10 +36,8 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
         }
 
         try {
-            console.log('dentro del trycatch')
             const { data } = await authApi.get('/validate-token', config);
             const { name, role } = data;
-            console.log('data: ', data)
             dispatch({ type: 'Auth - Login', payload: {name, role} });
         } catch (error) {
             console.log(error)

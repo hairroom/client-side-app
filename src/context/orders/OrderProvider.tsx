@@ -44,8 +44,7 @@ export const OrderProvider: React.FC<any> = ({ children }) => {
             //     product: string,
             //     price: number,
             //     paymentMethod: string,}
-
-        console.log(name, lastName, phone, email, numberIdentification, typeIdentification, address)
+        
 
         const { data } = await ordersApi.post<Order>('/createOrder', { name, lastName, phone, email, numberIdentification, typeIdentification, address });
         dispatch({ type: 'Orders - AddNewOrder', payload: data })
@@ -65,32 +64,10 @@ export const OrderProvider: React.FC<any> = ({ children }) => {
     const filterPerson = async (typeIdentification: string, numberIdentification: string) => {
 
         const { data } = await ordersApi.post<Order>('/filterOrderByIdentification', { typeIdentification, numberIdentification });
-        console.log('USUARIO ENCONTRADO EN EL PROVIDER: ', data);
+
         dispatch({ type: 'Orders - SearchPerson', payload: data })
         return data;
     }
-
-    // const refreshOrders = async () => {
-
-    //     console.log('USER: ', user);
-
-    //     const config = {
-    //         headers: {
-    //             Authorization: `Bearer ${localStorage.getItem('TOKEN-USER')}`,
-    //             'x-token': `${localStorage.getItem('TOKEN-USER')}`,
-    //         }
-    //     }
-
-    //     if( user?.role === 'admin' ){
-    //         const { data } = await authApi.get<Order[]>('/getOrders', config);
-    //         dispatch({ type: 'Orders - RefreshData', payload: data });
-    //     }
-
-    // }
-
-    // useEffect(() => {
-    //     refreshOrders();
-    // }, [])
     
 
     return (

@@ -58,8 +58,7 @@ const NewOrder = () => {
 
     const { enqueueSnackbar } = useSnackbar();
     
-    const onTypeDocumentChanged = (event: any) => {
-        console.log(event.target.value);
+    const onTypeDocumentChanged = (event: any) => { 
         setTypeDoc(event.target.value);
         setTouched(true);
     };
@@ -111,8 +110,6 @@ const NewOrder = () => {
         }: FormData) => {
     
         setLoading(true);
-    
-        console.log('type identification', typeDoc)
 
         const isValidData = await addOrder(name,
             lastName,
