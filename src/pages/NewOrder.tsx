@@ -76,6 +76,8 @@ const NewOrder = () => {
 
     
     const searchPerson = async () => {
+        if(!typeDoc || getValues().numberIdentification.length < 4) return;
+
         setLoading(true);
         const user = await filterPerson(typeDoc, getValues().numberIdentification);
         setLoading(false);
@@ -174,11 +176,11 @@ const NewOrder = () => {
                                                 </FormControl>
                                             </Grid>
                                             <Grid container spacing={2}>
-                                                <Grid item xs={12} sx={{ display: 'flex'}}>
+                                                <Grid item xs={12} sx={{ display: 'flex'}} onBlur={ searchPerson }>
                                                     <TextField
                                                         label="Número de Identificación"
                                                         autoComplete="off"
-                                                        type="string"
+                                                        type="number"
                                                         variant="outlined"
                                                         fullWidth
                                                         disabled={disabled}
